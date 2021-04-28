@@ -1,0 +1,71 @@
+\documentclass[a4paper, 14pt]{extarticle}
+\usepackage{indentfirst}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english, russian]{babel}
+\usepackage{amsmath, amssymb, amsthm, amscd, latexsym}
+\usepackage[nottoc,numbib]{tocbibind}
+\usepackage{graphicx, caption}
+\usepackage[left=3cm,right=2cm,top=2cm,bottom=3cm]{geometry}
+\setlength{\parindent}{1.25cm}
+\linespread{1.25}
+\graphicspath{{pictures/}}
+
+\newtheorem{theorem}{Теорема}[subsection]
+%\numberwithin{theorem}{subsection}
+\newtheorem{lemma}{Лемма}
+\newtheorem{corollary}{Следствие}
+\newtheorem{proposition}{Предложение}
+\newtheorem{assertion}{Утверждение}
+\theoremstyle{definition}
+\newtheorem{definition}{Определение}[subsection]
+%\numberwithin{definition}{subsection}
+\newtheorem{remark}{Замечание}
+\newtheorem{example}{Пример}
+\renewcommand{\thetheorem}{\arabic{theorem}}
+\renewcommand{\thedefinition}{\arabic{definition}}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,
+    urlcolor=black,
+    pdfpagemode=FullScreen,
+}
+
+
+\title{EM-algorithm}
+\author{Р.\,С.~Мурадасилов}
+\date{2020}
+
+\begin{document}
+\input{text/title.tex}
+
+\input{text/abstract.tex}
+
+\setcounter{page}{2}
+\newpage
+
+\tableofcontents
+\newpage
+
+\section{Введение}
+\input{text/introduction.tex}
+\newpage
+
+\section{Историческая часть вопроса}
+\input{text/history.tex}
+\newpage
+
+\section{Основные результаты}
+\input{text/main_results.tex}
+\newpage
+
+\section{Заключение}
+\input{text/conclusion.tex}
+\newpage
+
+\input{text/bibliography.tex}
+
+\end{document}
