@@ -71,10 +71,10 @@
     \end{enumerate}
 
 
-
+\newpage
 \subsection{Применение EM-алгоритма}
 
-В данной работе EM-алгоритм представлен классом GaussianMixture \cite{fifth}, предложенной библиотекой scikit-learn. Этот класс позволяет оценивать параметры гауссовских распределений.
+В данной работе EM-алгоритм представлен классом GaussianMixture \cite{sixth}, предложенной библиотекой scikit-learn. Этот класс позволяет оценивать параметры гауссовских распределений.
 
 Метод fit этого класса оценивает параметры модели с помощью EM-алгоритма. Метод fit итерируется между E-шагом и M-шагом указанное количество раз до тех пор, пока изменение правдоподобия или нижней границы не станет меньше некоторого числа. В противном случае возникнет сообщение о том, что метод не сходится.
 
@@ -82,7 +82,7 @@
 
 \subsubsection{Проверка работоспособности GaussianMixture}
 
-С помощью модуля stats \cite{sixth} библиотеки Scipy сгенерированы выборки разных распределений.
+С помощью модуля stats \cite{seventh} библиотеки Scipy сгенерированы выборки разных распределений.
 
 Для ясности введём следующие обозначения:
 \begin{itemize}
@@ -100,7 +100,7 @@
 
         где параметр $\mu$ --- математическое ожидание и $\sigma$ среднеквадратическое отклонение распределения. Квадрат среднеквадратического отклонения, $\sigma^2$, называется дисперсией.
 
-        Генерирование одного одномерного гауссовского распределения:
+        Генерирование одного одномерного гауссовского распределения (Рис. 2):
         \begin{verbatim}
 mu = 0
 variance = 1
@@ -134,7 +134,7 @@ model_covariance: 0.13947565
         В результате видим, что оценка параметров GaussianMixtureModel в точности совпадает с реальными параметрами.
     }
     \item {
-        Генерирование двух одномерных гауссовских распределений:
+        Генерирование двух одномерных гауссовских распределений (Рис. 3):
         \begin{verbatim}
 mu_1 = 2
 variance_1 = 4
@@ -163,9 +163,11 @@ new_data = np.concatenate((data_1, data_2), axis=0)
 np.random.shuffle(new_data)
 
 k = 2
-model = gmm(n_components=k,
-            max_iter=1000,
-            covariance_type='full')
+model = gmm(
+        n_components=k,
+        max_iter=1000,
+        covariance_type='full'
+)
 model.fit(new_data)
         \end{verbatim}
         Вывод программы:
@@ -183,7 +185,7 @@ model_covariance_2: 0.10954001
         Здесь во время многократных экспериментов точность результата варьировалась в зависимости от исходных распределений.
     }
     \item {
-        Генерирование одного двумерного гауссовского распределения:
+        Генерирование одного двумерного гауссовского распределения (Рис. 4):
 
         \begin{verbatim}
 x = np.linspace(0, 10, 100)
@@ -194,8 +196,11 @@ mu_x = np.mean(x)
 sigma_x = np.std(x)
 mu_y = np.mean(y)
 sigma_y = np.std(y)
-norm = multivariate_normal([mu_x, mu_y],
-                           [[sigma_x, 0], [0, sigma_y]])
+norm = multivariate_normal(
+        [mu_x, mu_y],
+        [[sigma_x, 0],
+        [0, sigma_y]]
+)
 
 pos = np.empty(X.shape + (2,))
 pos[:, :, 0] = X
@@ -204,7 +209,7 @@ data = norm.pdf(pos)
         \end{verbatim}
         \begin{figure}[h]
             \begin{center}
-                \includegraphics[width=0.5\linewidth]{2-d-gaussian-plot.png}
+                \includegraphics[width=0.7\linewidth]{2-d-gaussian-plot.png}
                 \caption{}
                 \label{ris:experimcoded}
             \end{center}
@@ -213,9 +218,11 @@ data = norm.pdf(pos)
         Проверка оценки параметров соответствующей выборки с помощью GaussianMixtureModel:
         \begin{verbatim}
 k = 2
-model = gmm(n_components=k,
-            max_iter=10000,
-            covariance_type='full')
+model = gmm(
+        n_components=k,
+        max_iter=10000,
+        covariance_type='full'
+)
 model.fit(new_data)
         \end{verbatim}
 
@@ -239,7 +246,7 @@ model_covariance_y: 3.22703713
         $$p(x) = \frac{1}{b - a},$$
         принимающая значения $p(x)$ в промежутке $[a, b)$, и ноль --- вне промежутка.
 
-        Генерирование одного одномерного равномерного распределения:
+        Генерирование одного одномерного равномерного распределения (Рис. 5):
         \begin{verbatim}
 a = 0
 b = 5
@@ -247,15 +254,15 @@ size = 100
 uni = uniform(loc=a, scale=b)
 x = np.linspace(uni.ppf(0), uni.ppf(1), size)
 data = uni.pdf(x)
-
+        \end{verbatim}
+        
         \begin{figure}[h]
             \begin{center}
-                \includegraphics[width=0.5\linewidth]{1-d-uniform-plot.png}
+                \includegraphics[width=0.7\linewidth]{1-d-uniform-plot.png}
                 \caption{}
                 \label{ris:experimcoded}
             \end{center}
         \end{figure}
-        \end{verbatim}
 
         Проверка оценки параметров соответствующей выборки с помощью GaussianMixtureModel:
         \begin{verbatim}
@@ -278,7 +285,7 @@ model_covariance: 0.001
 
 \subsubsection{Применение EM-алгоритма к цензурированной выборке}
 
-Дана выборка объема $n = 97$ вида $\{(z_{(i)}, \delta_{(i)}),\ i=\overline{1,n}\}$:
+Дана выборка объема $n = 97$ вида $\{(z_{(i)}, \delta_{(i)}),\ i=\overline{1,n}\}$ (Рис. 6):
 
 (777;1), (781;0), (843;0), (866;0), (869;1), (872;1), (876;1), (893;1), (894;1), (895;0), (898;1), (906;0), (907;1), (909;1), (911;1), (911;0), (914;0), (927;1), (932;1), (936;0), (940;0), (942,5;0), (943;0), (945;1), (945;0), (948;1), (951;0), (953;0), (956;0), (957;1), (957;0), (959;0), (960;0), (966;1), (966;0), (969;1), (970;0), (971;1), (972;0), (973;0), (977;0), (983;1), (984;0), (985;1), (989;1), (992,5;1), (993;1), (996;1), (998;1), (1001;0), (1002;0), (1005;0), (1006;0), (1009;1), (1011,5;1), (1012;1), (1012;0), (1013;0), (1015;0), (1016;0), (1018;0), (1022;1), (1023;0), (1025;1), (1027;0), (1029;1), (1031;1), (1031;0), (1031,5;0), (1033;1), (1036;1), (1043;1), (1043;0), (1044;1), (1044;0), (1045;0), (1047;0), (1053;1), (1055;1), (1058;0), (1059;1), (1060;1), (1060;0), (1064;0), (1070;0), (1073;0), (1080;1), (1085;1), (1093;0), (1093,5;1), (1094;1), (1106;0), (1107;0), (1118;0), (1128;1), (1139;1), (1153;0).
 
@@ -292,7 +299,7 @@ model_covariance: 0.001
 
 Данные представлены в месяцах, причем число 1 в парах означает нецензурирование (т.е. смерть), а 0 - цензурирование. При этом 46 человек умерли с начала открытия центра в 1964 году по 1 июля 1975 года ко дню сбора данных. Это нецензурированные данные. Из остальных 51 человек 5 были выписаны из центра, а 46 ещё были живы к 1 июля 1975 года. Это цензурировананные данные.
 
-Построим следующую оценку по формулам:
+Построим оценку, предложенную к.ф.-м.н. А. А. Абдушукуровым, по следующим формулам:
 \begin{multline*}
     F_n^{RR}(x) = 1 - (1 - H_n(x))^{\frac{\Lambda_{1n}(x)}{\Lambda_n(x)}} = \\ = \left\{ \begin{array}{cl} 0, & x < z_{(1)} \\ 1 - (1 - \frac{k}{n})^{\frac{\Lambda_{1n}(x)}{\Lambda_n(x)}}, & z_{(k)} \le x < z_{(k+1)}, k = \overline{1,n} \\ 1, & x \ge z_{(n)} \end{array} \right.,
 \end{multline*}
@@ -307,7 +314,7 @@ model_covariance: 0.001
     \Lambda_{n}(x) = \int_{-\infty}^x \frac{dH_n(u)}{1 - H_n(u-)} = \sum_{j=1}^n \frac{I(z_{(j)} \le x)}{\sum_{i=1}^n I(z_{(i)} \ge z_{(j)})}.
 \]
 
-Приведём код программы, которая реализует вышеизложенные формулы и строит оценку $F_n^{RR}$.
+Приведём код программы, которая реализует вышеизложенные формулы и строит оценку $F_n^{RR}$ (Рис. 7):
 \begin{verbatim}
 def one_minus_H_n(x, data):
     n = len(data)
@@ -377,3 +384,52 @@ for i in range(2, n):
 sigma = sqrt(variance)
 return mu, sigma
 \end{verbatim}
+
+Далее центрируем и нормируем исходные данные (Рис. 8):
+\begin{verbatim}
+z = [data[i][0] for i in range(97)]
+mu, sigma = calculate_mu_and_sigma(z, data)
+
+data_processed = (data[:, 0] - mu) / sigma
+data_processed = np.c_[data_processed, data[:, 1]]
+
+z = [data_processed[i][0] for i in range(97)]
+mu, sigma = calculate_mu_and_sigma(z, data_processed)
+\end{verbatim}
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.7\linewidth]{FnRR-processed.png}
+        \caption{}
+        \label{ris:experimcoded}
+    \end{center}
+\end{figure}
+
+Вывод программы:
+\begin{verbatim}
+mu_before: 1039.7833741995091
+sigma_before: 81.9647172814403
+mu_after: 3.5417227168543786e-06
+sigma_after: 0.9999999999937279
+\end{verbatim}
+
+Проверка оценки параметров выборки, состоящей из компоненты z, с помощью GaussianMixtureModel:
+\begin{verbatim}
+k = 1
+model = GMM(
+    n_components=k,
+    max_iter=10000,
+    covariance_type='full'
+)
+model.fit(data_processed)
+\end{verbatim}
+
+Вывод программы:
+\begin{verbatim}
+data_mean: 3.5417227168543786e-06
+data_covariance: 0.9999999999937279
+model_mean: -0.58832044
+model_covariance: 0.8946689
+\end{verbatim}
+
+В результате видим, что оценка параметров цензурированной выборки после центрирования и нормирования с помощью GaussianMixtureModel очень близка к истинному значению.
